@@ -33,7 +33,7 @@ startretries={{ program.startretries | default(3) }}
 exitcodes={{ program.exitcodes | default([0]) | join(',') }}
 stopsignal={{ program.stopsignal | default("TERM") }}
 stopwaitsecs={{ program.stopwaitsecs | default(10) }}
-{# environment={{','.join(f"{key}={val}" for key, val in (program.environment|default({})).items())}} #}
+environment={{ ','.join(program.environment|default([])) }}
 
 
 {% endfor %}
