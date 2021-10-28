@@ -1,12 +1,12 @@
 {% if inet_http_server is defined %}
 [inet_http_server]
 port={{ inet_http_server.port|default("127.0.0.1:9001") }}
-    {% if inet_http_server.user is defined %}
+{% if inet_http_server.user is defined %}
 username={{ inet_http_server.user }}
-    {% endif %}
-    {% if inet_http_server.password is defined %}
+{% endif %}
+{% if inet_http_server.password is defined %}
 password={{ inet_http_server.password }}
-    {% endif %}
+{% endif %}
 
 {% endif %}
 
@@ -34,6 +34,5 @@ exitcodes={{ program.exitcodes | default([0]) | join(',') }}
 stopsignal={{ program.stopsignal | default("TERM") }}
 stopwaitsecs={{ program.stopwaitsecs | default(10) }}
 environment={{ ','.join(program.environment|default([])) }}
-
 
 {% endfor %}
