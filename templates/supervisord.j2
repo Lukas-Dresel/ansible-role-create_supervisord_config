@@ -1,0 +1,39 @@
+{% if inet_http_server is defined %}
+[inet_http_server]
+port={{ inet_http_server.port|default("127.0.0.1:9001") }}
+    {% if inet_http_server.user is defined %}
+username={{ inet_http_server.user }}
+    {% endif %}
+    {% if inet_http_server.password is defined %}
+password={{ inet_http_server.password }}
+    {% endif %}
+
+{% endif %}
+
+[supervisord]
+nodaemon={{ supervisord.nodaemon | default(true) }}
+loglevel={{ supervisord.loglevel | default("info") }}
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+{% for name, program in programs.items() %}
+
+[program:{{ name }}]
+command={{ program.command }}
+directory={{ program.directory }}
+user={{ program.user }}
+{# process_name=$(program_name)s #}
+
+numprocs={{ program.numprocs | default(1) }}
+autostart={{ program.autostart | default(false) }}
+autorestart={{ program.autorestart | default("unexpected") }}
+startsecs={{ program.startsecs | default(10) }}
+startretries={{ program.startretries | default(3) }}
+exitcodes={{ program.exitcodes | default([0]) | join(',') }}
+stopsignal={{ program.stopsignal | default("TERM") }}
+stopwaitsecs={{ program.stopwaitsecs | default(10) }}
+{# environment={{','.join(f"{key}={val}" for key, val in (program.environment|default({})).items())}} #}
+
+
+{% endfor %}

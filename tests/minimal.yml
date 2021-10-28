@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  tasks:
+    - name: install a random file dumper as a supervisord service
+      include_role:
+        name: lukas_dresel.create_supervisord_config
+      vars:
+        supervisord_config_path: /tmp/supervisord_config.ini
+
+        inet_http_server:
+
+        programs:
+          rand0:
+            command: "/bin/bash -c 'while true; do head -n 3 /dev/urandom | tee /tmp/r4Nd0m; sleep 10; done'"
+            directory: /tmp
+            user: "{{ansible_user_id}}"
+            autostart: true
+
+# # Service file created by register_systemd_service for Service r4nD0m
+#
+# [Unit]
+# Description = r4nD0m
+# After = network.target
+#
+# AssertPathExists = /tmp
+#
+# [Service]
+# WorkingDirectory= /tmp
+#
+# ExecStart=/bin/bash -c 'while true; do head -n 3 /dev/urandom | tee /tmp/r4Nd0m; sleep 10; done'
+# Restart= always
+#
+#
+# [Install]

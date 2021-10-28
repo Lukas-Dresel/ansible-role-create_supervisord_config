@@ -1,0 +1,8 @@
+---
+- name: "{{ Name }} - template supervisord config file"
+  template:
+    src: supervisord.j2
+    dest: "{{ supervisord_config_path }}"
+    owner: "{{ supervisord_config_owner | default(ansible_user_id) }}"
+    group: "{{ supervisord_config_owner | default(ansible_user_id) }}"
+    mode: "u=rw,g=r,o=r"
